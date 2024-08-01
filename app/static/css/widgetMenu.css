@@ -1,0 +1,9 @@
+.sidebar {
+    width: 300px;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+  }
+  .sidebar .card {
+    margin-bottom: 10px;
+    cursor: move;
+  }

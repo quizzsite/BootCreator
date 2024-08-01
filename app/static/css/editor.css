@@ -1,0 +1,60 @@
+.iframe-container {
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #1d1d1d;
+    background: #1d1d1d;
+    position: relative;
+    transition: width 0.3s ease;
+}
+
+.iframe-header {
+    display: flex;
+    align-items: center;
+    background: #333;
+    color: #fff;
+    padding: 15px;
+    border-bottom: 2px solid #1d1d1d;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+}
+
+.dots {
+    display: flex;
+    gap: 5px;
+    margin-right: 10px; /* Добавлен отступ для отступа от края */
+}
+
+.dots span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 4px; /* Вертикальное центрирование */
+}
+
+.dot-1 { background: #f26c6f; }
+.dot-2 { background: #ffc554; }
+.dot-3 { background: #5dce91; }
+
+.iframe-content {
+    height: 400px; /* Adjust based on your needs */
+    width: 100%;
+    border-radius: 12px;
+}
+
+.icons {
+    display: flex;
+    gap: 5px;
+}
+
+.icons i {
+    color: #fff;
+    font-size: 16px;
+}

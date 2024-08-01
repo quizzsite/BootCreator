@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+	<style>
+		body {
+			display: flex;
+			height: 100vh;
+			margin: 0;
+			background: #000c30;
+		}
+	</style>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/dropzone.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/widgetMenu.css') }}">
+</head>
+<body>
+	<div class="sidebar">
+		<h3>UI Library</h3>
+		<div class="card" draggable="true" ondragstart="dragStart(event)">
+			<div class="card-body">
+				Navigation
+			</div>
+		</div>
+		<div class="card" draggable="true" ondragstart="dragStart(event)">
+			<div class="card-body">
+				Headers
+			</div>
+		</div>
+		<div class="card" draggable="true" ondragstart="dragStart(event)">
+			<div class="card-body">
+				Features
+			</div>
+		</div>
+	</div>
+
+	<div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+		Перетащите элемент сюда
+	</div>
+
+	<script src="{{ url_for('static', filename='js/dragndrop.js') }}"></script>
+
+	<!-- VUE WIDGETS -->
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 
+	<script src="{{ url_for('static', filename='js/vue/editor.js') }}"></script>
+
+
+	<!-- SOCKETIO -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        document.addEventListener('DOMContentLoaded', function() {
+            var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+            socket.on('connect', function() {
+                console.log('Connected to server');
+            });
+
+            socket.on('receive_data', function(data) {
+                document.getElementById('result').innerText = 'Result: ' + data.result;
+            });
+
+            document.getElementById('send').onclick = function() {
+                var data = document.getElementById('data').value;
+                socket.emit('send_data', { 'data': data });
+            };
+        });
+    </script>
+</body>
+</html>
