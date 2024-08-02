@@ -1,46 +1,120 @@
-.dropzone {
-	flex: 1;
-	border-radius: 5px;
-	padding: 20px;
-	margin-left: 20px;
-	min-height: 300px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-	overflow: hidden;
-	}
-.dropzone.dragover {
-	&::before {
-		content: '';
-		position: absolute;
-		z-index: -2;
-		left: -50%;
-		top: -50%;
-		width: 200%;
-		height: 200%;
-		background-color: #399953;
-		background-repeat: no-repeat;
-		background-size: 50% 50%, 50% 50%;
-		background-position: 0 0, 100% 0, 100% 100%, 0 100%;
-		background-image: linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5);
-		animation: rotate 4s linear infinite;
-	}
-
-	&::after {
-		content: '';
-		position: absolute;
-		z-index: -1;
-		left: 6px;
-		top: 6px;
-		width: calc(100% - 12px);
-		height: calc(100% - 12px);
-		background: white;
-		border-radius: 5px;
-	}
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    background: #000c30;
 }
+
+.dropzone {
+    flex: 1;
+    border-radius: 5px;
+    padding: 20px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1); /* Прозрачный фон, чтобы быть видимым */
+    z-index: 10; /* Должен быть выше, чем у iframe-container */
+}
+
+.dropzone.dragover::before {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background-color: #399953;
+    background-repeat: no-repeat;
+    background-size: 50% 50%, 50% 50%;
+    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-image: linear-gradient(#399953, #399953), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#377af5, #377af5);
+    animation: rotate 4s linear infinite;
+}
+
+.dropzone.dragover::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    left: 6px;
+    top: 6px;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    background: white;
+    border-radius: 5px;
+}
+
 @keyframes rotate {
-	100% {
-		transform: rotate(1turn);
-	}
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+.iframe-container {
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #1d1d1d;
+    background: #1d1d1d;
+    position: relative;
+    z-index: 1; /* Убедитесь, что меньше, чем у dropzone */
+    transition: width 0.3s ease;
+}
+
+.iframe-header {
+    display: flex;
+    align-items: center;
+    background: #333;
+    color: #fff;
+    z-index: 1;
+    padding: 15px;
+    border-bottom: 2px solid #1d1d1d;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+}
+
+.dots {
+    display: flex;
+    gap: 5px;
+    margin-right: 10px;
+}
+
+.dots span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 4px;
+}
+
+.dot-1 { background: #f26c6f; }
+.dot-2 { background: #ffc554; }
+.dot-3 { background: #5dce91; }
+
+.iframe-content {
+    height: 400px;
+    width: 100%;
+    border-radius: 12px;
+	pointer-events: none;
+    z-index: 0; /* Убедитесь, что меньше, чем у dropzone */
+    position: relative;
+}
+
+.icons {
+    display: flex;
+    gap: 5px;
+}
+
+.icons i {
+    color: #fff;
+    font-size: 16px;
 }
