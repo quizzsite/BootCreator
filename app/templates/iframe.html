@@ -1,32 +1,120 @@
 {% include 'base.html' %}
 {% block head %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/editor.css') }}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/editor.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+<style>
+    body {
+        display: flex;
+        height: 100vh;
+        margin: 0;
+        background: #000c30;
+    }
+
+    .title {
+        max-width: 300px;
+        font-size: 14px;
+        text-align: center;
+        border-radius: 6px;
+        cursor: pointer;
+        padding: 5px 0px 5px 0px;
+        background-color: #262626;
+        border-bottom: 1px solid #303030;
+    }
+
+    #sideMenu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 300px;
+        height: 100%;
+        background-color: #f8f9fa;
+        transition: right 0.3s;
+        overflow-y: auto;
+        padding: 10px;
+        z-index: 1000;
+    }
+
+    #sideMenu.active {
+        right: 0;
+    }
+    .iframe-container {
+        position: relative;
+    }
+</style>
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/dropzone.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/widgetMenu.css') }}">
+<!-- <script src="{{ url_for('static', filename='js/dragndrop.js') }}"></script> -->
 {% endblock %}
-<body>
-    <div class="iframe-container">
-        <div class="iframe-header">
-            <div class="dots">
-                <span class="dot-1"></span>
-                <span class="dot-2"></span>
-                <span class="dot-3"></span>
-            </div>
-            <div class="title">file.html</div>
+
+{% block content %}
+<div class="sidebar">
+    <h3>UI Library</h3>
+    <div class="card" draggable="true" ondragstart="dragStart(event)">
+        <div class="card-body">
+            Navigation
+        </div>
+    </div>
+    <div class="card" draggable="true" ondragstart="dragStart(event)">
+        <div class="card-body">
+            Headers
+        </div>
+    </div>
+    <div class="card" draggable="true" ondragstart="dragStart(event)">
+        <div class="card-body">
+            Features
+        </div>
+    </div>
+</div>
+
+<div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)">
+    <div class="container mt-3" style="z-index: 0;">
+        <div class="iframe-container">
+            <div class="iframe-header">
+                <div class="dots">
+                    <span class="dot-1"></span>
+                    <span class="dot-2"></span>
+                    <span class="dot-3"></span>
+                </div>
+                <div class="title">
+                    {{ file }}
+                    <button class="btn ms-2" onclick="alert('SAVING FILE')">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#dfdfdf" class="bi bi-file-arrow-down-fill" viewBox="0 0 16 16">
+                            <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0H3v5.5A1.5 1.5 0 0 0 4.5 7h7A1.5 1.5 0 0 0 13 5.5V0h.086a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5H14v-5.5A1.5 1.5 0 0 0 12.5 9h-9A1.5 1.5 0 0 0 2 10.5V16h-.5A1.5 1.5 0 0 1 0 14.5z"/>
+                            <path d="M3 16h10v-5.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5zm9-16H4v5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5zM9 1h2v4H9z"/>
+                        </svg>
+                    </button>
+                    <button class="btn ms-2" onclick="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#dfdfdf" class="bi bi-file-arrow-down-fill" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67"/>
+                        </svg>
+                    </button>
+
+                </div>
                 <div class="icons">
                     <i class="bi bi-laptop" onclick="resizeIframe(1366)"></i>
                     <i class="bi bi-tablet" onclick="resizeIframe(778)"></i>
                     <i class="bi bi-phone" onclick="resizeIframe(390)"></i>
                 </div>
             </div>
-            <iframe class="iframe-content" src="https://example.com" frameborder="0"></iframe>
+            <iframe class="iframe-content" id="myiframe" frameborder="0"></iframe>
         </div>
-    
-        <script>
-            function resizeIframe(width) {
-                // Изменяем ширину контейнера и iframe
-                document.querySelector('.iframe-container').style.width = width + 'px';
-            }
-        </script>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", docReady);
+function docReady()
+{
+	document.getElementById('myiframe').contentDocument.write('<html><body><h3>текст</h3></body></html>');
+	document.getElementById('myiframe').contentDocument.close();
+	document.getElementById('myiframe').contentDocument.addEventListener('click', showIt);
+}
+function showIt(e)
+{
+	console.log(e.target);
+}
+</script>
+{% endblock %}

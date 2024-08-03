@@ -7,6 +7,7 @@ from config import Config
 from .models import *
 from .ext import *
 from .routes import main
+from .handlers import *
 
 #App
 app = Flask(__name__)
@@ -15,41 +16,14 @@ app.config.from_object(Config)
 celery_init_app(app)
 db.init_app(app)
 appServer.init_app(app)
+cors.init_app(app)
 
 with app.app_context():
     db.create_all()
 
 app.register_blueprint(main)
 
-@appServer.on('send_data')
-def handle_data(data):
-    emit('receive_data', {'result': "result"})
-
-@app.route('/')
-def home():
-    return render_template('leftMenu.html')
-
-@app.route('/editor')
-def editor():
-    return render_template('editor.html')
-
-def registerUser(usr):
-    if User.query.get(usr):
-        usr.payed = True
-    return 
-
-@shared_task(ignore_result=False)
-def add_together(a: int, b: int) -> int:
-    return a + b
-
-@app.route('/test_db')
-def test_db():
-    try:
-        result = User.query.all()
-        return 'Database connection is working!'
-    except Exception as e:
-        return f'Database connection failed: {e}'
-
+updateProjects(appServer)
 
 def runServ():
     appServer.run(app, debug=True)

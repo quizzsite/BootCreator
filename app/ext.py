@@ -1,9 +1,16 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
+from flask import Flask, jsonify
 from celery import Celery, Task
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
+from flask_cors import CORS
+
+from .tasks import ProjectManager
 
 db = SQLAlchemy()
+
+projMan = ProjectManager()
+
+cors = CORS()
 
 def celery_init_app(app: Flask) -> Celery:
     class FlaskTask(Task):
@@ -17,4 +24,4 @@ def celery_init_app(app: Flask) -> Celery:
     app.extensions["celery"] = celery_app
     return celery_app
 
-appServer = SocketIO()
+appServer = SocketIO(cors_allowed_origins="*")
